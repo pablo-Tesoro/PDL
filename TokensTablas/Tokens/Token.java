@@ -1,15 +1,15 @@
 package TokensTablas.Tokens;
 
 public class Token {
-    private String key;
+    private int key;
     private String value;
 
-    public Token(String key, String value) {
-        this.key = key;
-        this.value = value;
+    public Token(int cod, String cadena) {
+        this.key = cod;
+        this.value = cadena;
     }
 
-    public String getKey() {
+    public int getKey() {
         return this.key;
     }
 
@@ -17,9 +17,7 @@ public class Token {
         return this.value;
     }
 
-    @Override
     public String toString() {
         return "<" + getKey() + "," + getValue() + ">\n";
     }
 }
-fgfedc
