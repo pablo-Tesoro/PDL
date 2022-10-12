@@ -1,0 +1,13 @@
+CONTENIDOS DE LA TABLA # 1
+
+* LEXEMA : 'a'
+ --------- ---------
+* LEXEMA : 'b'
+ --------- ---------
+* LEXEMA : 'number'
+ --------- ---------
+* LEXEMA : 'operacion'
+ --------- ---------
+* LEXEMA : 'num1'
+ --------- ---------
+* LEXEMA : 'num2'
