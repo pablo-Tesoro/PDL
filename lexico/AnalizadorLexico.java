@@ -14,6 +14,7 @@ public class AnalizadorLexico {
     private boolean fin;
     private int contTabla = 1;
     private ArrayList<String> identificadores = new ArrayList<String>();
+    private int pos = 1;
 
     public AnalizadorLexico() {
         try{
@@ -199,7 +200,7 @@ public class AnalizadorLexico {
                 break;
             case 18:
                 System.out.println("Entro al estado 18");
-                while(!car.esDelimitador(caracter) && !caracter.equals("\r")){
+                while(!caracter.equals("\r") && !caracter.equals("EOF")){
                     leerCar();
                 }
                 System.out.println("Termina el comentario");
@@ -221,22 +222,25 @@ public class AnalizadorLexico {
                 }
                 else{
                     Identificador id = new Identificador();
-                    token = new Token(id.getCod(), contTabla + "");
+                    Boolean anadir = true;
                     if(identificadores.size()>0){
-                        Boolean anadir = true;
                         for(int i=0; i<identificadores.size(); i++){
                             if(identificadores.get(i).equals(lexema)){
+                                System.out.println("lexema repetido");
                                 anadir = false;
+                                token = new Token(id.getCod(), (i+1) + "");
                             }
                         }
                         if(anadir){
+                            System.out.println("Añado");
                             identificadores.add(lexema);
-                            contTabla++;
-                        }
+                            pos += 1;
+                            token = new Token(id.getCod(), pos + "");
+                        }      
                     }
                     else {
                         identificadores.add(lexema);
-                        contTabla++;
+                        token = new Token(id.getCod(), pos + "");
                     }
                     tokensGenerados.add(token);
                     System.out.println("Token identificador generado");
@@ -288,16 +292,14 @@ public class AnalizadorLexico {
 		    path = path.concat("\\pruebas\\tabla.txt");
             fw = new FileWriter(path);
             bw = new BufferedWriter(fw);
-            bw.write("CONTENIDOS DE LA TABLA # 1");
+            bw.write("CONTENIDOS DE LA TABLA # 1 :");
             bw.newLine();
             bw.newLine();
             for(int i=0; i<identificadores.size(); i++){
                 bw.write("* LEXEMA : " + "'" + identificadores.get(i) + "'");
                 bw.newLine();
-                if(i != identificadores.size() - 1) {
-                    bw.write(" --------- ---------");
-                    bw.newLine();
-                }
+                bw.write("  --------- ---------");
+                bw.newLine();
             }
             bw.close();
         }

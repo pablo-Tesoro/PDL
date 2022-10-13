@@ -1,14 +1,29 @@
-let a    int   ;
-let b     int  ;
-let number int ;
-print  'Introduce el primer operando' ;
-input a;
-print 'Introduce el segundo operando';input  
-	b;
-function operacion int (int num1, int num2)
+// Ejemplo #1
+
+let    cadena string;
+input 
+cadena;
+let logico1 boolean    ;
+let logico2 boolean    ;
+let int2    int        ;
+int1 = 000000378;
+
+int2 = int1;
+cadena = 'string';
+
+function ff string(string ss)
 {
-	return num1-num2;
+    logico2 =  logico1;
+    if (logico2) cadena = ff (ss);
+    varglobal = 78;
+    return cadena;
 }
 
-number = operacion (a, b);
-print number;
+function funcion string (string logico2)
+{    let var int;
+
+  switch case
+
+  return logico2;
+}
+print(((ff((funcion(cadena))))));

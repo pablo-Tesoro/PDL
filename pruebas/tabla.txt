@@ -1,13 +1,22 @@
-CONTENIDOS DE LA TABLA # 1
+CONTENIDOS DE LA TABLA # 1 :
 
-* LEXEMA : 'a'
- --------- ---------
-* LEXEMA : 'b'
- --------- ---------
-* LEXEMA : 'number'
- --------- ---------
-* LEXEMA : 'operacion'
- --------- ---------
-* LEXEMA : 'num1'
- --------- ---------
-* LEXEMA : 'num2'
+* LEXEMA : 'cadena'
+  --------- ---------
+* LEXEMA : 'logico1'
+  --------- ---------
+* LEXEMA : 'logico2'
+  --------- ---------
+* LEXEMA : 'int2'
+  --------- ---------
+* LEXEMA : 'int1'
+  --------- ---------
+* LEXEMA : 'ff'
+  --------- ---------
+* LEXEMA : 'ss'
+  --------- ---------
+* LEXEMA : 'varglobal'
+  --------- ---------
+* LEXEMA : 'funcion'
+  --------- ---------
+* LEXEMA : 'var'
+  --------- ---------
