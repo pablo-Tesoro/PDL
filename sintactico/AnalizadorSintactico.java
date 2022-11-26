@@ -204,41 +204,21 @@ public class AnalizadorSintactico {
                         token = getToken();
                     }
                     C();
-                    CASE2();
+                    CASE();
                     return;
-                case "}":
-                    parse.add(43);
-                    return;
-                default:    
-                    System.out.println("Error, tipo de token no permitido: " + token.getTipo() + " linea 209");
-                    break;
-            }
-        }
-    }
-
-    public void CASE2(){
-        if(token == null){
-            return;
-        }
-        else{
-            switch(token.getTipo()){
                 case "break":
-                    parse.add(44);
+                    parse.add(43);
                     token = getToken();
                     if(token.getTipo().equals(";")){
                         token = getToken();
                     }
                     CASE();
                     return;
-                case "case":
-                    parse.add(45);
-                    CASE();
-                    return;
                 case "}":
-                    parse.add(46);
+                    parse.add(44);
                     return;
-                default:
-                    System.out.println("Error, tipo de token no permitido: " + token.getTipo() + " linea 234");
+                default:    
+                    System.out.println("Error, tipo de token no permitido: " + token.getTipo() + " linea 209");
                     break;
             }
         }
@@ -815,12 +795,12 @@ public class AnalizadorSintactico {
         else{
             switch(token.getTipo()){
                 case "id":
-                    parse.add(47);
+                    parse.add(45);
                     token = getToken();
                     VP();
                     return;
                 case "(":
-                    parse.add(48);
+                    parse.add(46);
                     token = getToken();
                     E();
                     if(token.getTipo().equals(")")){
@@ -828,11 +808,11 @@ public class AnalizadorSintactico {
                     }
                     return;
                 case "entero":
-                    parse.add(49);
+                    parse.add(47);
                     token = getToken();
                     return;
                 case "cadena":
-                    parse.add(50);
+                    parse.add(48);
                     token = getToken();
                     return;
                 default:
@@ -849,7 +829,7 @@ public class AnalizadorSintactico {
         else{
             switch(token.getTipo()){
                 case "(":
-                    parse.add(51);
+                    parse.add(49);
                     token = getToken();
                     L();
                     if(token.getTipo().equals(")")){
@@ -857,22 +837,22 @@ public class AnalizadorSintactico {
                     }
                     return;
                 case "+":
-                    parse.add(52);
+                    parse.add(50);
                     return;
                 case ">":
-                    parse.add(52);
+                    parse.add(50);
                     return;
                 case ")":
-                    parse.add(52);
+                    parse.add(50);
                     return;
                 case ";":
-                    parse.add(52);
+                    parse.add(50);
                     return;
                 case ":":
-                    parse.add(52);
+                    parse.add(50);
                     return;
                 case ",":
-                    parse.add(52);
+                    parse.add(50);
                     return;
                 default:
                     System.out.println("Error, tipo de token no permitido: " + token.getTipo() + " linea 870");

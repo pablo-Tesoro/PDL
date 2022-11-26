@@ -1,10 +1,22 @@
 CONTENIDOS DE LA TABLA # 1 :
 
-* LEXEMA : 'x'
+* LEXEMA : 'booleano'
   --------- ---------
-* LEXEMA : 'b'
+* LEXEMA : 'bisiesto'
   --------- ---------
-* LEXEMA : 'z'
+* LEXEMA : 'a'
   --------- ---------
-* LEXEMA : 'y'
+* LEXEMA : 'bis'
+  --------- ---------
+* LEXEMA : 'dias'
+  --------- ---------
+* LEXEMA : 'm'
+  --------- ---------
+* LEXEMA : 'esFechaCorrecta'
+  --------- ---------
+* LEXEMA : 'd'
+  --------- ---------
+* LEXEMA : 'demo'
+  --------- ---------
+* LEXEMA : '_a_1_b_2'
   --------- ---------

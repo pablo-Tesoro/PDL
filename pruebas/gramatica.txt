@@ -1,6 +1,6 @@
 Terminales = { boolean break case function if input int let print return string switch default entero cadena id %= = , ; : ( ) { } + ! > EOF }
 
-NoTerminales = { PP P B S SP T A C F H K E EP CASE CASE2 L Q X R RP U V VP }
+NoTerminales = { PP P B S SP T A C F H K E EP CASE L Q X R RP U V VP }
 
 Axioma = PP
 
@@ -66,19 +66,16 @@ RP -> lambda ////39
 U -> ! V ////40
 U -> V ////41
 
-CASE -> case E : C CASE2 ////42
-CASE -> lambda ////43
+CASE -> case E : C CASE ////42
+CASE -> break ; CASE ////43
+CASE -> lambda ////44
 
-CASE2 -> break ; CASE ////44
-CASE2 -> CASE ////45
-CASE2 -> lambda ////46
+V -> id VP ////45
+V -> ( E ) ////46
+V -> entero ////47
+V -> cadena ////48
 
-V -> id VP ////47
-V -> ( E ) ////48
-V -> entero ////49
-V -> cadena ////50
-
-VP -> ( L ) ////51
-VP -> lambda ////52
+VP -> ( L ) ////49
+VP -> lambda ////50
  
 }
