@@ -1,9 +1,10 @@
-package lexico;
+package lex;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.io.*;
 import TokensTablas.Tokens.*;
-import TokensTablas.Tablas.*;
 
 public class AnalizadorLexico {
     public FileReader fr;
@@ -12,17 +13,21 @@ public class AnalizadorLexico {
     private String caracter;
     private ArrayList<Token> tokensGenerados;
     private boolean fin;
-    private int contTabla = 1;
     private ArrayList<String> identificadores = new ArrayList<String>();
     private int pos = 1;
+    private int contadorLinea = 1;
+    private int contadorErrores = 0;
+    private GestorErrores gestorErrores;
+    private Entry<Integer, String> entrada;
 
     public AnalizadorLexico(String fichero) {
         try{
             String path = new File("").getAbsolutePath();
 			path = path.concat("\\pruebas\\" + fichero + ".txt");
 			this.fr = new FileReader(path);
-            this.fin= false;
+            this.fin = false;
             this.tokensGenerados = new ArrayList<Token>();
+            this.gestorErrores = new GestorErrores();
             leerCar();
         } catch (IOException e) {
             System.out.println("Error: " + e);
@@ -31,12 +36,12 @@ public class AnalizadorLexico {
 
     public void leerCar() {
         try{
-            int pos = fr.read();
-            if(pos == -1){
+            int pos1 = fr.read();
+            if(pos1 == -1){
                 this.caracter = "EOF";
             }
             else {
-                this.caracter = Character.toString((char) pos);
+                this.caracter = Character.toString((char) pos1);
             }
         }
         catch (IOException e) {
@@ -48,11 +53,14 @@ public class AnalizadorLexico {
         Token token = null;
         int estado = 0;
         String lexema = "";
-        Caracter car = new Caracter();
+        Caracter car = new Caracter(); 
         while(!fin){
             switch(estado){
             case 0:
                 if(car.esDelimitador(caracter) || caracter.equals("\r")){
+                    if(caracter.equals("\r")){
+                        contadorLinea++;
+                    }
                     leerCar();
                 }
                 else if(car.esLetra(caracter) || caracter.equals("_")){
@@ -64,56 +72,51 @@ public class AnalizadorLexico {
                     lexema += caracter;
                 }
                 else if(caracter.equals("+")){
-                    estado = 5;
-                }
-                else if(caracter.equals("-")){
-                    estado = 5;
+                    estado = 3;
                 }
                 else if(caracter.equals("%")){
                     lexema += caracter;
-                    estado = 8;
                     leerCar();
-                    lexema += caracter;
+                    if(caracter.equals("=")){
+                        estado = 4;
+                        lexema += caracter;
+                    }
+                    else{
+                        System.out.println("Error, caracter esperado: =, caracter recibido: " + caracter);
+                        leerCar();
+                        estado = 0;
+                        lexema = "";
+                    }
                 }
                 else if(caracter.equals("=")){
                     lexema += caracter;
-                    estado = 8;
-                }
-                else if(caracter.equals("<")){
-                    estado = 11;
+                    estado = 4;
                 }
                 else if(caracter.equals(">")){
-                    Relacion rel = new Relacion(caracter);
-                    token = new Token(rel.getCod(), "");
-                    tokensGenerados.add(token);
+                    estado = 5;
                 }
                 else if(caracter.equals("!")){
-                    estado = 15;
+                    estado = 6;
                 }
                 else if(caracter.equals("(") || caracter.equals(")") || caracter.equals("{") || caracter.equals("}") || caracter.equals(":") || caracter.equals(",") || caracter.equals(";")){
-                    estado = 16;
+                    estado = 7;
                 }
                 else if(caracter.equals("EOF")){
-                    token = new Token(30, "");
-                    tokensGenerados.add(token);                
-                    fin = true;
+                    estado = 8;
                 }
                 else if(caracter.equals("'")){
-
-                    leerCar();
-                    while(!caracter.equals("'")){
-                        lexema += caracter;
-                        leerCar();   
-                    }
-                    estado = 22;
+                    estado = 13;
+                    
+                    estado = 9;
                 }
                 else if(caracter.equals("/")){
-                    leerCar();
-                    if(caracter.equals("/")){
-                        estado = 18;
-                    }
+                    estado = 10;
                 }
                 else{
+                    contadorErrores += 1;
+                    this.entrada = new AbstractMap.SimpleEntry<>(contadorErrores, caracter);
+                    gestorErrores.anadirLinea(contadorLinea);
+                    gestorErrores.add(entrada);
                     leerCar();
                 }
                 break;
@@ -123,7 +126,7 @@ public class AnalizadorLexico {
                     lexema += caracter;
                 }
                 else {
-                    estado = 20;
+                    estado = 11;
                 }
                 break;
             case 2:
@@ -132,17 +135,17 @@ public class AnalizadorLexico {
                     lexema += caracter;
                 }
                 else {
-                    estado = 21;
+                    estado = 12;
                 }
                 break;
-            case 5: 
-                Aritmetico ar = new Aritmetico(caracter);
+            case 3: 
+                Aritmetico ar = new Aritmetico();
                 token = new Token(ar.getCod(), "");
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
-            case 8:
+            case 4:
                 Asignacion asig = new Asignacion(lexema);
                 token = new Token(asig.getCod(), "");
                 tokensGenerados.add(token);
@@ -150,35 +153,52 @@ public class AnalizadorLexico {
                 leerCar();
                 lexema = "";
                 break;
-            case 11:
-                Relacion rel = new Relacion(caracter);
+            case 5:
+                Relacion rel = new Relacion();
                 token = new Token(rel.getCod(), "");
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
-            case 15:
+            case 6:
                 Logico log = new Logico();
                 token = new Token(log.getCod(), "");
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
-            case 16:
+            case 7:
                 Simbolos sim = new Simbolos(caracter);
                 token = new Token(sim.getCod(), "");
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
-            case 18:
-                while(!caracter.equals("\r") && !caracter.equals("EOF")){
+            case 8:
+                token = new Token(28, "");
+                tokensGenerados.add(token);                
+                fin = true;
+                break;
+            case 9:
+                leerCar();
+                while(!caracter.equals("'")){
+                    lexema += caracter;
                     leerCar();
                 }
-                leerCar();
-                estado = 0;
+                estado = 13;
                 break;
-            case 20:
+            case 10:
+                leerCar();
+                if(caracter.equals("/")){
+                    estado = 14;
+                }
+                else{
+                    System.out.println("Error, caracter esperado: /, caracter recibido: " + caracter);
+                    leerCar();
+                    estado = 0;
+                }
+                break;
+            case 11:
                 PalRes palres = new PalRes();
                 if(palres.esPalRes(lexema)){
                     PalabrasReservadas palabra = new PalabrasReservadas(lexema);
@@ -212,14 +232,14 @@ public class AnalizadorLexico {
                     estado = 0;
                 }
                 break;
-            case 21:
+            case 12:
                 Entero num = new Entero();
                 token = new Token(num.getCod(), lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 lexema = "";
                 break;
-            case 22:
+            case 13:
                 Cadena cadena = new Cadena(lexema);
                 token = new Token(cadena.getCod(), "\"" + cadena.getValue() + "\"");
                 tokensGenerados.add(token);
@@ -227,7 +247,14 @@ public class AnalizadorLexico {
                 lexema = "";
                 leerCar();
                 break;
-            }
+            case 14:
+                while(!caracter.equals("\r") && !caracter.equals("EOF")){
+                    leerCar();
+                }
+                leerCar();
+                estado = 0;
+                break;
+            }           
         }
     }
 
@@ -269,5 +296,14 @@ public class AnalizadorLexico {
         catch(Exception e){
             System.out.println("Error: " + e);
         }
+    }
+    
+    public void generarErrores(){
+        if(contadorErrores > 0){
+            gestorErrores.imprimirErrores(contadorLinea);
+        }
+    }
+    public ArrayList<Token> getTokens(){
+        return this.tokensGenerados;
     }
 }

@@ -1,29 +1,15 @@
-// Ejemplo #1
-
-let    cadena string;
-input 
-cadena;
-let logico1 boolean    ;
-let logico2 boolean    ;
-let int2    int        ;
-int1 = 000000378;
-
-int2 = int1;
-cadena = 'string';
-
-function ff string(string ss)
-{
-    logico2 =  logico1;
-    if (logico2) cadena = ff (ss);
-    varglobal = 78;
-    return cadena;
-}
-
-function funcion string (string logico2)
-{    let var int;
-
-  switch case
-
-  return logico2;
-}
-print(((ff((funcion(cadena))))));
+let x int;
+let b boolean;
+let z int;
+input x;
+print x;
+input z;
+print x+z;
+b=x>z;if (b)
+x =
+  x + 6
+    + z
+    + 1
+    + (2
+    + y
+    + 7);

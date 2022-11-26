@@ -1,4 +1,4 @@
-package lexico;
+package lex;
 
 import java.util.regex.*;
 

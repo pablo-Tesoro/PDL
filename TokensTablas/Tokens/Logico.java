@@ -4,7 +4,7 @@ public class Logico {
     private int codigo;
 
     public Logico() {
-        this.codigo = 27;
+        this.codigo = 26;
     }
 
     public int getCod() {

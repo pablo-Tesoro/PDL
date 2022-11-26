@@ -1,22 +1,10 @@
 CONTENIDOS DE LA TABLA # 1 :
 
-* LEXEMA : 'cadena'
+* LEXEMA : 'x'
   --------- ---------
-* LEXEMA : 'logico1'
+* LEXEMA : 'b'
   --------- ---------
-* LEXEMA : 'logico2'
+* LEXEMA : 'z'
   --------- ---------
-* LEXEMA : 'int2'
-  --------- ---------
-* LEXEMA : 'int1'
-  --------- ---------
-* LEXEMA : 'ff'
-  --------- ---------
-* LEXEMA : 'ss'
-  --------- ---------
-* LEXEMA : 'varglobal'
-  --------- ---------
-* LEXEMA : 'funcion'
-  --------- ---------
-* LEXEMA : 'var'
+* LEXEMA : 'y'
   --------- ---------

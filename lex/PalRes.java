@@ -1,4 +1,4 @@
-package lexico;
+package lex;
 
 public class PalRes {
     private boolean res;

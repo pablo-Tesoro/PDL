@@ -1,0 +1,84 @@
+Terminales = { boolean break case function if input int let print return string switch default entero cadena id %= = , ; : ( ) { } + ! > EOF }
+
+NoTerminales = { PP P B S SP T A C F H K E EP CASE CASE2 L Q X R RP U V VP }
+
+Axioma = PP
+
+Producciones = {
+
+PP -> P ////1
+
+P -> B P ////2
+P -> F P ////3
+P -> EOF ////4
+
+B -> if ( E ) S ////5
+B -> let id T ; ////6
+B -> S ////7
+B -> switch ( E ) { CASE } ////8
+
+T -> boolean ////9
+T -> int ////10
+T -> string ////11
+
+S -> id SP ////12
+S -> print E ; ////13
+S -> input id ; ////14
+S -> return X ; ////15
+
+SP -> = E ; ////16
+SP -> %= E ; ////17
+SP -> ( L ) ; ////18
+
+X -> E ////19
+X -> lambda ////20
+
+C -> B C ////21
+C -> lambda ////22
+
+F -> function id H ( A ) { C } ////23
+
+H -> T ////24
+H -> lambda ////25
+
+A -> T id K ////26
+A -> lambda ////27
+
+K -> , T id K ////28
+K -> lambda ////29
+
+L -> E Q ////30
+L -> lambda ////31
+
+Q -> , E Q ////32
+Q -> lambda ////33
+
+E -> R EP ////34
+
+EP -> > R EP ////35
+EP -> lambda ////36
+
+R -> U RP ////37
+
+RP -> + U RP ////38
+RP -> lambda ////39
+
+U -> ! V ////40
+U -> V ////41
+
+CASE -> case E : C CASE2 ////42
+CASE -> lambda ////43
+
+CASE2 -> break ; CASE ////44
+CASE2 -> CASE ////45
+CASE2 -> lambda ////46
+
+V -> id VP ////47
+V -> ( E ) ////48
+V -> entero ////49
+V -> cadena ////50
+
+VP -> ( L ) ////51
+VP -> lambda ////52
+ 
+}
