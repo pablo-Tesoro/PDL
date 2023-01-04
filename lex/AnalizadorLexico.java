@@ -1,33 +1,32 @@
 package lex;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 import java.io.*;
 import TokensTablas.Tokens.*;
+import Gestor.GestorErrores;
+import Gestor.Error;
 
 public class AnalizadorLexico {
-    public FileReader fr;
-    public FileWriter fw;
+    private FileReader fr;
+    private FileWriter fw;
     private BufferedWriter bw;
     private String caracter;
     private ArrayList<Token> tokensGenerados;
     private boolean fin;
-    private ArrayList<String> identificadores = new ArrayList<String>();
+    private ArrayList<String> identificadores;
     private int pos = 1;
     private int contadorLinea = 1;
-    private int contadorErrores = 0;
     private GestorErrores gestorErrores;
-    private Entry<Integer, String> entrada;
 
-    public AnalizadorLexico(String fichero) {
+    public AnalizadorLexico(String fichero, GestorErrores gestorErr) {
         try{
-            String path = new File("").getAbsolutePath();
-			path = path.concat("\\pruebas\\" + fichero + ".txt");
-			this.fr = new FileReader(path);
+            //String path = new File("").getAbsolutePath();
+			//path = path.concat("\\pruebas\\" + fichero + ".txt");
+			this.fr = new FileReader(fichero);
             this.fin = false;
             this.tokensGenerados = new ArrayList<Token>();
-            this.gestorErrores = new GestorErrores();
+            this.identificadores = new ArrayList<String>();
+            this.gestorErrores = gestorErr;
             leerCar();
         } catch (IOException e) {
             System.out.println("Error: " + e);
@@ -82,7 +81,10 @@ public class AnalizadorLexico {
                         lexema += caracter;
                     }
                     else{
-                        System.out.println("Error, caracter esperado: =, caracter recibido: " + caracter);
+                        Error error = new Error();
+                        error.setError("(Error Lexico) Caracter no esperado en la linea " + contadorLinea + ": " + caracter);
+                        gestorErrores.incrErrores();
+                        gestorErrores.add(error);
                         leerCar();
                         estado = 0;
                         lexema = "";
@@ -113,10 +115,10 @@ public class AnalizadorLexico {
                     estado = 10;
                 }
                 else{
-                    contadorErrores += 1;
-                    this.entrada = new AbstractMap.SimpleEntry<>(contadorErrores, caracter);
-                    gestorErrores.anadirLinea(contadorLinea);
-                    gestorErrores.add(entrada);
+                    Error error = new Error();
+                    error.setError("(Error Lexico) Caracter no esperado en la linea " + contadorLinea + ": " + caracter);
+                    gestorErrores.incrErrores();
+                    gestorErrores.add(error);
                     leerCar();
                 }
                 break;
@@ -140,14 +142,14 @@ public class AnalizadorLexico {
                 break;
             case 3: 
                 Aritmetico ar = new Aritmetico();
-                token = new Token(ar.getCod(), "");
+                token = new Token(ar.getCod(), "", lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
             case 4:
                 Asignacion asig = new Asignacion(lexema);
-                token = new Token(asig.getCod(), "");
+                token = new Token(asig.getCod(), "", lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
@@ -155,27 +157,27 @@ public class AnalizadorLexico {
                 break;
             case 5:
                 Relacion rel = new Relacion();
-                token = new Token(rel.getCod(), "");
+                token = new Token(rel.getCod(), "", lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
             case 6:
                 Logico log = new Logico();
-                token = new Token(log.getCod(), "");
+                token = new Token(log.getCod(), "", lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
             case 7:
                 Simbolos sim = new Simbolos(caracter);
-                token = new Token(sim.getCod(), "");
+                token = new Token(sim.getCod(), "", lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 leerCar();
                 break;
             case 8:
-                token = new Token(28, "");
+                token = new Token(28, "", lexema);
                 tokensGenerados.add(token);                
                 fin = true;
                 break;
@@ -193,7 +195,10 @@ public class AnalizadorLexico {
                     estado = 14;
                 }
                 else{
-                    System.out.println("Error, caracter esperado: /, caracter recibido: " + caracter);
+                    Error error = new Error();
+                    error.setError("(Error Lexico) Caracter no esperado en la linea " + contadorLinea + ": " + caracter);
+                    gestorErrores.incrErrores();
+                    gestorErrores.add(error);
                     leerCar();
                     estado = 0;
                 }
@@ -202,7 +207,7 @@ public class AnalizadorLexico {
                 PalRes palres = new PalRes();
                 if(palres.esPalRes(lexema)){
                     PalabrasReservadas palabra = new PalabrasReservadas(lexema);
-                    token = new Token(palabra.getCod(), "");
+                    token = new Token(palabra.getCod(), "", lexema);
                     tokensGenerados.add(token);
                     lexema = "";
                     estado = 0;
@@ -214,18 +219,18 @@ public class AnalizadorLexico {
                         for(int i=0; i<identificadores.size(); i++){
                             if(identificadores.get(i).equals(lexema)){
                                 anadir = false;
-                                token = new Token(id.getCod(), (i+1) + "");
+                                token = new Token(id.getCod(), (i+1) + "", lexema);
                             }
                         }
                         if(anadir){
                             identificadores.add(lexema);
                             pos += 1;
-                            token = new Token(id.getCod(), pos + "");
+                            token = new Token(id.getCod(), pos + "", lexema);
                         }      
                     }
                     else {
                         identificadores.add(lexema);
-                        token = new Token(id.getCod(), pos + "");
+                        token = new Token(id.getCod(), pos + "", lexema);
                     }
                     tokensGenerados.add(token);
                     lexema = "";
@@ -234,14 +239,14 @@ public class AnalizadorLexico {
                 break;
             case 12:
                 Entero num = new Entero();
-                token = new Token(num.getCod(), lexema);
+                token = new Token(num.getCod(), lexema, lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 lexema = "";
                 break;
             case 13:
                 Cadena cadena = new Cadena(lexema);
-                token = new Token(cadena.getCod(), "\"" + cadena.getValue() + "\"");
+                token = new Token(cadena.getCod(), "\"" + cadena.getValue() + "\"", lexema);
                 tokensGenerados.add(token);
                 estado = 0;
                 lexema = "";
@@ -275,35 +280,12 @@ public class AnalizadorLexico {
             System.out.println("Error: " + e);
         }
     }
-    public void generarTablaSimbolos(){
-        try{
-            String path = new File("").getAbsolutePath();
-		    path = path.concat("\\pruebas\\tabla.txt");
-            fw = new FileWriter(path);
-            bw = new BufferedWriter(fw);
-            bw.write("CONTENIDOS DE LA TABLA # 1 :");
-            bw.newLine();
-            bw.newLine();
-            for(int i=0; i<identificadores.size(); i++){
-                bw.write("* LEXEMA : " + "'" + identificadores.get(i) + "'");
-                bw.newLine();
-                bw.write("  --------- ---------");
-                bw.newLine();
-            }
-            System.out.println("Tabla de Simbolos generada correctamente");
-            bw.close();
-        }
-        catch(Exception e){
-            System.out.println("Error: " + e);
-        }
-    }
     
-    public void generarErrores(){
-        if(contadorErrores > 0){
-            gestorErrores.imprimirErrores(contadorLinea);
-        }
-    }
     public ArrayList<Token> getTokens(){
         return this.tokensGenerados;
+    }
+
+    public GestorErrores getGestorErrores(){
+        return this.gestorErrores;
     }
 }

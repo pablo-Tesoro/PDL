@@ -12,14 +12,14 @@ P -> B P ////2
 P -> F P ////3
 P -> EOF ////4
 
-B -> if ( E ) S ////5 
+B -> if ( E ) S ////5
 B -> let id T ; ////6
 B -> S ////7
-B -> switch ( E ) { CASE } ////8 
+B -> switch ( E ) { CASE } ////8
 
-T -> boolean ////9
-T -> int ////10
-T -> string ////11
+T -> boolean ////9 {T.tipo = boolean, T.ancho = 2}
+T -> int ////10 {T.tipo = entero, T.ancho = 2}
+T -> string ////11 {T.tipo = cadena, T.ancho = 128}
 
 S -> id SP ////12
 S -> print E ; ////13
@@ -72,10 +72,10 @@ CASE -> lambda ////44
 
 V -> id VP ////45
 V -> ( E ) ////46
-V -> entero ////47
-V -> cadena ////48
+V -> entero ////47 {V.tipo = entero}
+V -> cadena ////48 {V.tipo = cadena}
 
 VP -> ( L ) ////49
 VP -> lambda ////50
-
+ 
 }

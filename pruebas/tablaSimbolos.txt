@@ -1,0 +1,18 @@
+TABLA PRINCIPAL #1:
+* LEXEMA : 'a'
+  ATRIBUTOS:
+    + tipo:                  'function'
+      + numParam:          0
+    + TipoRetorno:      'vacio'
+  + EtiqFuncion:       'funcion01'
+  -------------- --------------
+* LEXEMA : '_'
+  ATRIBUTOS:
+  + tipo:        'entero'
+  + despl:          0
+  -------------- --------------
+TABLA de la FUNCION a #2:
+* LEXEMA : 'x'
+  + tipo:       'entero'
+  + despl:          0
+  -------------- --------------

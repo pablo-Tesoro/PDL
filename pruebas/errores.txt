@@ -1,1 +1,1 @@
-Error 1: Caracter no esperado en la linea 6 --> -
+No hay ningun error

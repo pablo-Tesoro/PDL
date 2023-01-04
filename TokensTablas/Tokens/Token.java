@@ -3,10 +3,12 @@ package TokensTablas.Tokens;
 public class Token {
     private int key;
     private String value;
+    private String lex;
 
-    public Token(int cod, String cadena) {
+    public Token(int cod, String cadena, String lexema) {
         this.key = cod;
         this.value = cadena;
+        this.lex = lexema;
     }
 
     public int getKey() {
@@ -19,6 +21,10 @@ public class Token {
 
     public String toString() {
         return "<" + getKey() + "," + getValue() + ">\n";
+    }
+
+    public String getLexema(){
+        return this.lex;
     }
 
     public String getTipo(){
