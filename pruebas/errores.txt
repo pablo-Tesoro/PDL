@@ -1,1 +1,4 @@
-No hay ningun error
+Error 1 --> (Error Semantico) La expresion de dentro del if no es correcta
+Error 2 --> (Error Semantico) No se puede asignar un valor de tipo string a la variable 'cad' de tipo entero
+Error 3 --> (Error Semantico) La expresion de dentro del if no es correcta
+Error 4 --> (Error Semantico) No se puede asignar un valor de tipo boolean a la variable 'l2' de tipo entero

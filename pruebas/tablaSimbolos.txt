@@ -1,18 +1,53 @@
 TABLA PRINCIPAL #1:
-* LEXEMA : 'a'
-  ATRIBUTOS:
-    + tipo:                  'function'
-      + numParam:          0
-    + TipoRetorno:      'vacio'
-  + EtiqFuncion:       'funcion01'
-  -------------- --------------
-* LEXEMA : '_'
+* LEXEMA : 'l1'
   ATRIBUTOS:
   + tipo:        'entero'
   + despl:          0
   -------------- --------------
-TABLA de la FUNCION a #2:
-* LEXEMA : 'x'
-  + tipo:       'entero'
+* LEXEMA : 'c'
+  ATRIBUTOS:
+  + tipo:        'boolean'
+  + despl:          1
+  -------------- --------------
+* LEXEMA : 'cad'
+  ATRIBUTOS:
+  + tipo:        'entero'
+  + despl:          2
+  -------------- --------------
+* LEXEMA : 'n2'
+  ATRIBUTOS:
+  + tipo:        'entero'
+  + despl:          3
+  -------------- --------------
+* LEXEMA : 'n1'
+  ATRIBUTOS:
+  + tipo:        'entero'
+  + despl:          4
+  -------------- --------------
+* LEXEMA : 'ff'
+  ATRIBUTOS:
+    + tipo:                  'function'
+      + numParam:          1
+      + TipoParam01:    'boolean'
+    + TipoRetorno:      'boolean'
+  + EtiqFuncion:       'funcion01'
+  -------------- --------------
+* LEXEMA : 'varglobal'
+  ATRIBUTOS:
+  + tipo:        'entero'
+  + despl:          5
+  -------------- --------------
+* LEXEMA : 'l2'
+  ATRIBUTOS:
+  + tipo:        'entero'
+  + despl:          6
+  -------------- --------------
+TABLA de la FUNCION ff #2:
+* LEXEMA : 'ss' (parametro)
+  + tipo:       'boolean'
   + despl:          0
+  -------------- --------------
+* LEXEMA : 'l1'
+  + tipo:       'entero'
+  + despl:          1
   -------------- --------------

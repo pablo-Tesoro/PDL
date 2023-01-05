@@ -32,7 +32,6 @@ public class AnalizadorSintactico {
     private GestorErrores gestorErrores;
     private elemTS funcion;
     private int idFunc;
-    private String retFuncion;
     private boolean llamadaFunc;
     private elemTS T, SP, X, H, E, R, RP, V, U;
 
@@ -49,7 +48,6 @@ public class AnalizadorSintactico {
         this.varGlobal = false;
         this.esCase = false;
         this.elemGlobal = new ArrayList<elemTS>();
-        this.retFuncion = "";
         this.llamadaFunc = false;
         this.lexFunciones = new ArrayList<String>();
         this.tablaGlobal = new ArrayList<elemTS>();
@@ -254,7 +252,7 @@ public class AnalizadorSintactico {
                             }
                         }
                         else{
-                            if(gestorTS.buscarTS(tablaLocal,lex) != null){
+                            if(gestorTS.buscarTS(tablaLocal,lex) != null && gestorTS.buscarTS(tablaGlobal,lex) != null){
                                 Error error = new Error();
                                 error.setError("(Error Semantico) La variable '" + lex + "' ya esta declarada");
                                 gestorErrores.incrErrores();
@@ -508,7 +506,7 @@ public class AnalizadorSintactico {
                         }
                     }
                     else{
-                        if((!funcion.getLexema().equals(token.getLexema())) && (elem=gestorTS.buscarTS(tablaLocal, token.getLexema())) == null && (elem=gestorTS.buscarTS(tablaGlobal, token.getLexema())) == null){
+                        if((elem=gestorTS.buscarTS(tablaGlobal, token.getLexema())) == null && (elem=gestorTS.buscarTS(tablaLocal, token.getLexema())) == null && !funcion.getLexema().equals(lex)){
                             if(elemGlobal.size() > 0){
                                 boolean encontrado = false;
                                 for (int i=0; i<elemGlobal.size(); i++){
@@ -538,6 +536,9 @@ public class AnalizadorSintactico {
                                 elem = elemGlob;
                             }
                         }
+                        else if(elem == null && funcion.getLexema().equals(lex)){
+                            elem = funcion;
+                        }
                     }
                     token = getToken();
                     SP();
@@ -553,14 +554,14 @@ public class AnalizadorSintactico {
                                     }
                                     if(!aux){
                                         Error error = new Error();
-                                        error.setError("(Error Semantico) No se ha llamado a la funcion " + token.getLexema() + " con los argumentos correctos");
+                                        error.setError("(Error Semantico) No se ha llamado a la funcion " + lex + " con los argumentos correctos");
                                         gestorErrores.incrErrores();
                                         gestorErrores.add(error);
                                     }
                                 }
                                 else{
                                     Error error = new Error();
-                                    error.setError("(Error Semantico) No se ha llamado a la funcion " + token.getLexema() + " con los argumentos correctos");
+                                    error.setError("(Error Semantico) No se ha llamado a la funcion " + lex + " con los argumentos correctos");
                                     gestorErrores.incrErrores();
                                     gestorErrores.add(error);          
                                 }
@@ -590,15 +591,12 @@ public class AnalizadorSintactico {
                         }
                     }
                     else{
+                        System.out.println("1");
                         if(elem != null){
+                            System.out.println(SP.getTipo());
                             if(!SP.getTipo().equals(elem.getTipo()) && SP.getTipo() != "function"){
                                 Error error = new Error();
-                                if(SP.getTipo().equals("function")){
-                                    error.setError("(Error Semantico) No se puede asignar un valor de tipo " + retFuncion + " a la variable '" + lex + "' de tipo " + elem.getTipo());
-                                }
-                                else{
-                                    error.setError("(Error Semantico) No se puede asignar un valor de tipo " + SP.getTipo() + " a la variable '" + lex + "' de tipo " + elem.getTipo());
-                                }
+                                error.setError("(Error Semantico) No se puede asignar un valor de tipo " + SP.getTipo() + " a la variable '" + lex + "' de tipo " + elem.getTipo());
                                 gestorErrores.incrErrores();
                                 gestorErrores.add(error);
                             }
@@ -626,7 +624,7 @@ public class AnalizadorSintactico {
                     parse.add(14);
                     token = getToken();
                     if(token.getTipo().equals("id")){
-                        if(gestorTS.buscarTS(tablaGlobal, token.getLexema()) == null){
+                        if(gestorTS.buscarTS(tablaGlobal, token.getLexema()) == null && gestorTS.buscarTS(tablaLocal, token.getLexema()) == null){
                             elem = new elemTS();
                             elem.setLexema(token.getLexema());
                             elem.setTipo("entero");
@@ -641,6 +639,9 @@ public class AnalizadorSintactico {
                         }
                         else{
                             elem=gestorTS.buscarTS(tablaGlobal, token.getLexema());
+                            if(elem == null){
+                                elem = gestorTS.buscarTS(tablaLocal, token.getLexema());
+                            }
                             if(elem.getTipo().equals("boolean")){
                                 Error error = new Error();
                                 error.setError("(Error Semantico) No se puede hacer un input de la variable " + elem.getLexema() + " de tipo " + elem.getTipo());
@@ -1005,7 +1006,6 @@ public class AnalizadorSintactico {
                             funcion = new elemTS();
                             funcion.setTipo("function");
                             funcion.setTipoRetorno(H.getTipo());
-                            retFuncion = H.getTipo();
                             funcion.setLexema(lex);
                             lexFunciones.add(lex);
                             funcion.setNArgs(0);
