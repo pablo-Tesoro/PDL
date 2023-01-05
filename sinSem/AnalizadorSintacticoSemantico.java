@@ -1,4 +1,4 @@
-package sintactico;
+package sinSem;
 
 import lex.AnalizadorLexico;
 import java.util.ArrayList;
@@ -7,9 +7,9 @@ import Gestor.GestorErrores;
 import Gestor.Error;
 import Gestor.GestorTS;
 import Gestor.elemTS;
-import TokensTablas.Tokens.Token;
+import Tokens.Token;
 
-public class AnalizadorSintactico {
+public class AnalizadorSintacticoSemantico {
     
     private ArrayList<Integer> parse;
     private ArrayList<Token> tokens;
@@ -35,7 +35,7 @@ public class AnalizadorSintactico {
     private boolean llamadaFunc;
     private elemTS T, SP, X, H, E, R, RP, V, U;
 
-    public AnalizadorSintactico(AnalizadorLexico lexico, GestorErrores gestorErrores){
+    public AnalizadorSintacticoSemantico(AnalizadorLexico lexico, GestorErrores gestorErrores){
         this.parse = new ArrayList<>();
         this.tokens = lexico.getTokens();
         this.cont = 0;

@@ -1,4 +1,4 @@
-package TokensTablas.Tokens;
+package Tokens;
 
 public class Relacion {
     private int codigo;

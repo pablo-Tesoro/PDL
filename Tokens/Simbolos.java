@@ -1,4 +1,4 @@
-package TokensTablas.Tokens;
+package Tokens;
 
 import java.io.PrintWriter;
 

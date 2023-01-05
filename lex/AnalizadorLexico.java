@@ -2,7 +2,7 @@ package lex;
 
 import java.util.ArrayList;
 import java.io.*;
-import TokensTablas.Tokens.*;
+import Tokens.*;
 import Gestor.GestorErrores;
 import Gestor.Error;
 

@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import lex.AnalizadorLexico;
-import sintactico.AnalizadorSintactico;
+import sinSem.AnalizadorSintacticoSemantico;
 
 public class App extends JFrame {
   public App() {
@@ -46,7 +46,7 @@ public class App extends JFrame {
           anLex.generarToken();
           anLex.escribirTokens();
           gestorErrores = anLex.getGestorErrores();
-          AnalizadorSintactico anSin = new AnalizadorSintactico(anLex, gestorErrores);
+          AnalizadorSintacticoSemantico anSin = new AnalizadorSintacticoSemantico(anLex, gestorErrores);
           anSin.genParse();
           anSin.generarTS();
           gestorErrores = anSin.getGestorErrores();
