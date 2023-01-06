@@ -16,6 +16,8 @@ public class AnalizadorSintacticoSemantico {
     private int cont;
     private Token token;
     private boolean mayor;
+    private String mayorAux;
+    private boolean suma;
     private boolean yaDevuelto;
     private ArrayList<elemTS> tablaGlobal;
     private ArrayList<elemTS> tablaLocal;
@@ -40,6 +42,8 @@ public class AnalizadorSintacticoSemantico {
         this.tokens = lexico.getTokens();
         this.cont = 0;
         this.mayor = false;
+        this.mayorAux = "";
+        this.suma = false;
         this.hayError = false;
         this.token = getToken();
         this.yaDevuelto = false;
@@ -63,7 +67,6 @@ public class AnalizadorSintacticoSemantico {
         tablas.set(0, tablaGlobal);
         
     }
-
     public void PP(){
         if (token == null){
             return;
@@ -591,9 +594,7 @@ public class AnalizadorSintacticoSemantico {
                         }
                     }
                     else{
-                        System.out.println("1");
                         if(elem != null){
-                            System.out.println(SP.getTipo());
                             if(!SP.getTipo().equals(elem.getTipo()) && SP.getTipo() != "function"){
                                 Error error = new Error();
                                 error.setError("(Error Semantico) No se puede asignar un valor de tipo " + SP.getTipo() + " a la variable '" + lex + "' de tipo " + elem.getTipo());
@@ -1481,8 +1482,14 @@ public class AnalizadorSintacticoSemantico {
                 case ">":
                     parse.add(35);
                     token = getToken();
-                    R();
                     mayor = true;
+                    R();
+                    if(!R.getTipo().equals("entero")){
+                        Error error = new Error();
+                        error.setError("(Error Semantico) El operador > solo se puede usar para comparar dos enteros");
+                        gestorErrores.incrErrores();
+                        gestorErrores.add(error);
+                    }
                     EP();
                     return;
                 case ",":
@@ -1527,30 +1534,43 @@ public class AnalizadorSintacticoSemantico {
                     U();
                     R.setTipo(U.getTipo());
                     RP();
+                    suma = false;
                     return;
                 case "id":
                     parse.add(37);
+                    System.out.println(R.getTipo());
                     U();
                     R.setTipo(U.getTipo());
                     RP();
+                    if(mayor && !mayorAux.equals("entero")){
+                        Error error = new Error();
+                        error.setError("(Error Semantico) El operador > solo se puede usar para comparar dos enteros");
+                        gestorErrores.incrErrores();
+                        gestorErrores.add(error);
+                    }
+                    suma = false;
+                    mayorAux = U.getTipo();
                     return;
                 case "(":
                     parse.add(37);
                     U();
                     R.setTipo(U.getTipo());
                     RP();
+                    suma = false;
                     return;
                 case "entero":
                     parse.add(37);
                     U();
                     R.setTipo(U.getTipo());
                     RP();
+                    suma = false;
                     return;
                 case "cadena":
                     parse.add(37);
                     U();
                     R.setTipo(U.getTipo());
                     RP();
+                    suma = false;
                     return;
                 default:
                     Error error = new Error();
@@ -1580,6 +1600,13 @@ public class AnalizadorSintacticoSemantico {
                 case "+":
                     parse.add(38);
                     token = getToken();
+                    suma = true;
+                    if(!U.getTipo().equals("entero")){
+                        Error error = new Error();
+                        error.setError("(Error Semantico) La suma tiene que ser entre dos enteros");
+                        gestorErrores.incrErrores();
+                        gestorErrores.add(error);
+                    }
                     U();
                     RP.setTipo("entero");
                     RP();
@@ -1629,11 +1656,23 @@ public class AnalizadorSintacticoSemantico {
                     token = getToken();
                     V();
                     U.setTipo(V.getTipo());
+                    if(!V.getTipo().equals("boolean")){
+                        Error error = new Error();
+                        error.setError("(Error Semantico) No se puede usar el operador ! con una variable de tipo " + V.getTipo());
+                        gestorErrores.incrErrores();
+                        gestorErrores.add(error);
+                    }
                     return;
                 case "id":
                     parse.add(41);
                     V();
                     U.setTipo(V.getTipo());
+                    if(suma && !U.getTipo().equals("entero")){
+                        Error error = new Error();
+                        error.setError("(Error Semantico) La suma tiene que ser entre dos enteros");
+                        gestorErrores.incrErrores();
+                        gestorErrores.add(error);
+                    }
                     return;
                 case "(":
                     parse.add(41);
@@ -1753,6 +1792,7 @@ public class AnalizadorSintacticoSemantico {
                                 elemGlob.setDesp(gestorTS.calcDesp("entero"));
                                 elemGlob.setTipo("entero");
                                 tablaGlobal.add(elemGlob);
+                                V.setTipo("entero");
                             }
                         }
                         else{

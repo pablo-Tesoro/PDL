@@ -47,7 +47,6 @@ public class AnalizadorLexico {
             System.out.println("Error: " + e);
         }
     }
-
     public void generarToken() {
         Token token = null;
         int estado = 0;
@@ -108,7 +107,6 @@ public class AnalizadorLexico {
                 }
                 else if(caracter.equals("'")){
                     estado = 13;
-                    
                     estado = 9;
                 }
                 else if(caracter.equals("/")){
@@ -178,7 +176,7 @@ public class AnalizadorLexico {
                 break;
             case 8:
                 token = new Token(28, "", lexema);
-                tokensGenerados.add(token);                
+                tokensGenerados.add(token);
                 fin = true;
                 break;
             case 9:
@@ -191,17 +189,13 @@ public class AnalizadorLexico {
                 break;
             case 10:
                 leerCar();
-                if(caracter.equals("/")){
-                    estado = 14;
-                }
-                else{
+                if(!caracter.equals("/")){
                     Error error = new Error();
                     error.setError("(Error Lexico) Caracter no esperado en la linea " + contadorLinea + ": " + caracter);
                     gestorErrores.incrErrores();
-                    gestorErrores.add(error);
-                    leerCar();
-                    estado = 0;
+                    gestorErrores.add(error); 
                 }
+                estado = 14;
                 break;
             case 11:
                 PalRes palres = new PalRes();

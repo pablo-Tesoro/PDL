@@ -1,44 +1,11 @@
 TABLA PRINCIPAL #1:
-* LEXEMA : 'bis'
+* LEXEMA : 'c'
   ATRIBUTOS:
-  + tipo:        'entero'
+  + tipo:        'boolean'
   + despl:          0
   -------------- --------------
 * LEXEMA : 'a'
   ATRIBUTOS:
-    + tipo:                  'function'
-      + numParam:          0
-    + TipoRetorno:      'vacio'
-  + EtiqFuncion:       'funcion01'
-  -------------- --------------
-* LEXEMA : 'bisiesto'
-  ATRIBUTOS:
-    + tipo:                  'function'
-      + numParam:          1
-      + TipoParam01:    'boolean'
-    + TipoRetorno:      'boolean'
-  + EtiqFuncion:       'funcion02'
-  -------------- --------------
-* LEXEMA : 'c'
-  ATRIBUTOS:
-  + tipo:        'boolean'
+  + tipo:        'entero'
   + despl:          1
-  -------------- --------------
-TABLA de la FUNCION a #2:
-* LEXEMA : 'bis'
-  + tipo:       'string'
-  + despl:          0
-  -------------- --------------
-TABLA de la FUNCION bisiesto #3:
-* LEXEMA : 'a' (parametro)
-  + tipo:       'boolean'
-  + despl:          0
-  -------------- --------------
-* LEXEMA : 'bis'
-  + tipo:       'boolean'
-  + despl:          1
-  -------------- --------------
-* LEXEMA : 'ent'
-  + tipo:       'entero'
-  + despl:          2
   -------------- --------------

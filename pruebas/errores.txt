@@ -1,2 +1,1 @@
-Error 1 --> (Error Semantico) No se puede asignar un valor de tipo boolean a la variable 'ent' de tipo entero
-Error 2 --> (Error Semantico) No se puede asignar un valor de tipo vacio a la variable 'bis' de tipo entero
+Error 1 --> (Error Semantico) No se puede asignar un valor de tipo entero a la variable 'c' de tipo boolean

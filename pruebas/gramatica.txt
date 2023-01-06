@@ -12,10 +12,10 @@ P -> B P ////2
 P -> F P ////3
 P -> EOF ////4
 
-B -> if ( E ) S ////5 
+B -> if ( E ) S ////5
 B -> let id T ; ////6
 B -> S ////7
-B -> switch ( E ) { CASE } ////8 
+B -> switch ( E ) { CASE } ////8
 
 T -> boolean ////9
 T -> int ////10
